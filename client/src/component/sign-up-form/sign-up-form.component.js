@@ -63,7 +63,7 @@ export default class SignUpform extends Component {
               required
               type='email'
               name='email'
-              placeholder='Enter email'
+              placeholder='Enter Email'
               value={this.state.email}
               onChange={this.handleChange}
             />
@@ -93,7 +93,7 @@ export default class SignUpform extends Component {
               required
               type='password'
               name='confirmPassword'
-              placeholder='Password confirmation'
+              placeholder='Password'
               value={this.state.confirmPassword}
               onChange={this.handleChange}
             />
