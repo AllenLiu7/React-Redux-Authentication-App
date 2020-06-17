@@ -7,18 +7,17 @@ const router = express.Router();
 router.post('/', async (req, res, next) => {
   passport.authenticate('login', async (err, user, info) => {
     try {
-      if (err || !user) {
+      if (!user) {
+        return res.json(info);
+      }
+      if (err) {
         const error = new Error('An Error occurred');
         return next(error);
       }
-      req.login(user, { session: false }, async (error) => {
+      req.login(user, async (error) => {
         if (error) return next(error);
 
-        // const body = { _id: user._id, email: user.email };
-        // //Sign the JWT token and populate the payload with the user email and id
-        // const token = jwt.sign({ user: body }, 'top_secret');
-        // //Send back the token to the user
-        return res.send('login success');
+        return res.json({ message: 'User logged in' });
       });
     } catch (error) {
       return next(error);
