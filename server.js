@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const compression = require('compression');
 const passport = require('passport');
 const connectDB = require('./config/db');
@@ -19,6 +20,17 @@ require('./auth/auth');
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: 'Our little secret.',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(cors());
 

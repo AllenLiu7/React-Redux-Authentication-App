@@ -40,7 +40,7 @@ export default class SignInForm extends Component {
         console.log(response);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.error);
       });
   };
   render() {

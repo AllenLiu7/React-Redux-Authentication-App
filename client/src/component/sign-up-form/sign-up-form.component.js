@@ -42,7 +42,7 @@ export default class SignUpform extends Component {
         password,
       })
       .then((response) => {
-        console.log(response);
+        console.log('sign up success');
       })
       .catch((err) => {
         console.log(err);
