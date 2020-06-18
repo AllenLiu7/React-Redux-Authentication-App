@@ -8,7 +8,7 @@ router.post('/', async (req, res, next) => {
   passport.authenticate('login', async (err, user, info) => {
     try {
       if (!user) {
-        return res.json(info);
+        return res.json({ info });
       }
       if (err) {
         const error = new Error('An Error occurred');
@@ -17,7 +17,7 @@ router.post('/', async (req, res, next) => {
       req.login(user, async (error) => {
         if (error) return next(error);
 
-        return res.json({ message: 'User logged in' });
+        return res.json({ user, info });
       });
     } catch (error) {
       return next(error);
