@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './sign-up-form.styles.scss';
 
-export default class SignUpform extends Component {
+class SignUpform extends Component {
   state = {
     email: '',
     password: '',
@@ -44,9 +45,11 @@ export default class SignUpform extends Component {
       .then((response) => {
         //console.log('sign up success');
         console.log(response);
+        this.props.history.push('/secrets');
       })
       .catch((err) => {
         console.log(err);
+        this.props.history.push('/signup');
       });
   };
 
@@ -111,3 +114,5 @@ export default class SignUpform extends Component {
     );
   }
 }
+
+export default withRouter(SignUpform);

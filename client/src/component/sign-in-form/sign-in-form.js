@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './sign-in-form.styles.scss';
 
-export default class SignInForm extends Component {
+class SignInForm extends Component {
   state = {
     email: '',
     password: '',
@@ -37,10 +38,12 @@ export default class SignInForm extends Component {
         password,
       })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+        this.props.history.push('/secrets');
       })
       .catch((err) => {
         console.log(err.error);
+        this.props.history.push('/signin');
       });
   };
   render() {
@@ -88,3 +91,5 @@ export default class SignInForm extends Component {
     );
   }
 }
+
+export default withRouter(SignInForm);

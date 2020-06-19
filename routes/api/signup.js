@@ -8,15 +8,15 @@ const router = express.Router();
 //middleware created previously
 
 router.post('/', async (req, res, next) => {
-  passport.authenticate('signup', async (err, user, info) => {
+  passport.authenticate('signup', async (error, user, info) => {
     try {
-      if (err) {
-        const error = new Error('An Error occurred');
-        return next(error);
+      if (error) {
+        return res.status(500).json({
+          message: 'Ooops, somthing happend',
+          error: error || 'internal server errror',
+        });
       }
-      if (err && user) {
-        return res.json(info);
-      }
+
       return res.json({ user, info });
     } catch (error) {
       return next(error);
