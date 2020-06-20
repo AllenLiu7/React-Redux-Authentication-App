@@ -40,7 +40,7 @@ class SignInForm extends Component {
       })
       .then((response) => {
         console.log(response);
-        this.props.history.push('/secrets');
+        this.props.history.push('/');
       })
       .catch((err) => {
         console.log(err.response.data.error);
