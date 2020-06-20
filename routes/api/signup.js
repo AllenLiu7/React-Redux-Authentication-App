@@ -1,6 +1,5 @@
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
@@ -17,7 +16,11 @@ router.post('/', async (req, res, next) => {
         });
       }
 
-      return res.json({ user, info });
+      req.login(user, async (error) => {
+        if (error) return next(error);
+
+        return res.json({ user, info });
+      });
     } catch (error) {
       return next(error);
     }

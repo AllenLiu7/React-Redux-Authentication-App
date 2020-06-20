@@ -5,7 +5,6 @@ const passport = require('passport');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const path = require('path');
 
 //if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -23,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: 'Our little secret.',
+    secret: 'Our secret.',
     resave: false,
     saveUninitialized: false,
   })
@@ -48,12 +47,7 @@ app.get('/', function (req, res) {
 });
 app.use('/login', require('./routes/api/login'));
 app.use('/signup', require('./routes/api/signup'));
-//We plugin our jwt strategy as a middleware so only verified users can access this route
-// app.use(
-//   '/secrets',
-//   passport.authenticate('jwt', { session: false }),
-//   require('./routes/api/secrets')
-// );
+app.use('/login_success', require('./routes/api/checkLogin'));
 
 //Handle Errors
 app.use(function (err, req, res, next) {

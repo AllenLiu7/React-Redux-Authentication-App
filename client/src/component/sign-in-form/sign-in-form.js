@@ -11,6 +11,7 @@ class SignInForm extends Component {
     email: '',
     password: '',
     validated: false,
+    error_message: '',
   };
 
   handleChange = (event) => {
@@ -38,11 +39,12 @@ class SignInForm extends Component {
         password,
       })
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
         this.props.history.push('/secrets');
       })
       .catch((err) => {
-        console.log(err.error);
+        console.log(err.response.data.error);
+        this.setState({ error_message: err.response.data.error });
         this.props.history.push('/signin');
       });
   };
@@ -86,6 +88,7 @@ class SignInForm extends Component {
           <Button variant='primary' type='submit'>
             Submit
           </Button>
+          <p className='alert'>{this.state.error_message}</p>
         </Form>
       </div>
     );

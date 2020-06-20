@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import HomePage from './component/pages/home-page/home.component';
 import SignInPage from './component/pages/sign-in-page/sign-in.component';
 import SignUpPage from './component/pages/sign-up-page/sign-up.component';
-import SecretsPage from './component/pages/secrests-page/secrets-page.component';
+import SecretPage from './component/pages/secrests-page/secrets-page.component';
 import './App.scss';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
           <Route exact path='/' component={HomePage} />
           <Route path='/signin' component={SignInPage} />
           <Route path='/signup' component={SignUpPage} />
-          <Route path='/secrets' component={SecretsPage} />
+          <Route path='/secrets' component={SecretPage} />
         </Switch>
       </Router>
     </>

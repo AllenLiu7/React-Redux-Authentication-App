@@ -1,6 +1,5 @@
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
@@ -15,9 +14,14 @@ router.post('/', async (req, res, next) => {
       }
 
       req.login(user, async (error) => {
-        if (error) return next(error);
+        if (error) {
+          res.status(500).json({
+            message: 'Ooops, somthing happend',
+            error: error || 'internal server errror',
+          });
+        }
 
-        return res.json({ user, info });
+        return res.json(user);
       });
     } catch (error) {
       return next(error);

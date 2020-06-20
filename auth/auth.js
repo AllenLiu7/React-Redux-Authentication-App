@@ -7,7 +7,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
+  UserModel.findById(id, function (err, user) {
     done(err, user);
   });
 });
@@ -42,11 +42,6 @@ passport.use(
             return done(null, user, { message: 'sign up seccess' });
           });
         });
-        // UserModel.findOne({email})
-        // //Save the information provided by the user to the the database1
-        // const user = await UserModel.create({ email, password });
-        // //Send the user information to the next middleware
-        // return done(null, user);
       } catch (error) {
         done(error);
       }

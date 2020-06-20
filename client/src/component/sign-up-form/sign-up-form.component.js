@@ -10,6 +10,7 @@ class SignUpform extends Component {
     email: '',
     password: '',
     confirmPassword: '',
+    error_message: '',
     validated: false,
   };
 
@@ -48,7 +49,8 @@ class SignUpform extends Component {
         this.props.history.push('/secrets');
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data.error);
+        this.setState({ error_message: err.response.data.error });
         this.props.history.push('/signup');
       });
   };
@@ -109,6 +111,7 @@ class SignUpform extends Component {
           <Button variant='primary' type='submit'>
             Register
           </Button>
+          <p className='alert'>{this.state.error_message}</p>
         </Form>
       </div>
     );
