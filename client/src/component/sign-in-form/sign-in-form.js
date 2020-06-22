@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { emailSignInStart } from '../../redux/user/user.action';
 
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
@@ -24,6 +26,7 @@ class SignInForm extends Component {
     event.preventDefault();
 
     const { email, password } = this.state;
+    const { emailSignInStart } = this.props;
     const form = event.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -33,20 +36,21 @@ class SignInForm extends Component {
 
     this.setState({ validated: true });
 
-    axios
-      .post('http://localhost:5000/login', {
-        email,
-        password,
-      })
-      .then((response) => {
-        console.log(response);
-        this.props.history.push('/');
-      })
-      .catch((err) => {
-        console.log(err.response.data.error);
-        this.setState({ error_message: err.response.data.error });
-        this.props.history.push('/signin');
-      });
+    emailSignInStart(email, password);
+    // axios
+    //   .post('http://localhost:5000/login', {
+    //     email,
+    //     password,
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     this.props.history.push('/secrets');
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response.data.error);
+    //     this.setState({ error_message: err.response.data.error });
+    //     this.props.history.push('/signin');
+    //   });
   };
   render() {
     return (
@@ -95,4 +99,9 @@ class SignInForm extends Component {
   }
 }
 
-export default withRouter(SignInForm);
+const mapDispatchToProps = (dispatch) => ({
+  emailSignInStart: (email, password) =>
+    dispatch(emailSignInStart({ email, password })),
+});
+
+export default connect(null, mapDispatchToProps)(SignInForm);
