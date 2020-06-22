@@ -25,8 +25,7 @@ export function* emailSignInAsync({ payload: { email, password } }) {
       email,
       password,
     });
-    console.log(response.data);
-    yield put(signInSuccess({ user: response.data }));
+    yield put(signInSuccess({ user: response }));
   } catch (error) {
     yield put(signInFailure(error));
   }
