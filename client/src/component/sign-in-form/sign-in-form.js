@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { emailSignInStart } from '../../redux/user/user.action';
 
-import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './sign-in-form.styles.scss';
@@ -26,7 +25,7 @@ class SignInForm extends Component {
     event.preventDefault();
 
     const { email, password } = this.state;
-    const { emailSignInStart } = this.props;
+    const { emailSignInStart, history } = this.props;
     const form = event.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -36,21 +35,7 @@ class SignInForm extends Component {
 
     this.setState({ validated: true });
 
-    emailSignInStart(email, password);
-    // axios
-    //   .post('http://localhost:5000/login', {
-    //     email,
-    //     password,
-    //   })
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.props.history.push('/secrets');
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response.data.error);
-    //     this.setState({ error_message: err.response.data.error });
-    //     this.props.history.push('/signin');
-    //   });
+    emailSignInStart(email, password, history);
   };
   render() {
     return (
@@ -100,8 +85,8 @@ class SignInForm extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  emailSignInStart: (email, password) =>
-    dispatch(emailSignInStart({ email, password })),
+  emailSignInStart: (email, password, history) =>
+    dispatch(emailSignInStart({ email, password, history })),
 });
 
-export default connect(null, mapDispatchToProps)(SignInForm);
+export default withRouter(connect(null, mapDispatchToProps)(SignInForm));

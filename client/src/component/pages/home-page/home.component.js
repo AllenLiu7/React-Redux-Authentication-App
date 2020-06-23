@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import Button from 'react-bootstrap/Button';
 import './home.styles.scss';
 
-export default class HomePage extends Component {
+class HomePage extends Component {
   render() {
     return (
       <div className='home'>
@@ -29,3 +30,9 @@ export default class HomePage extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+export default connect(mapStateToProps)(HomePage);

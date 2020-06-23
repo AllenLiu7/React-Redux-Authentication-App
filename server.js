@@ -48,6 +48,7 @@ app.get('/', function (req, res) {
 app.use('/login', require('./routes/api/login'));
 app.use('/signup', require('./routes/api/signup'));
 app.use('/login_success', require('./routes/api/checkLogin'));
+app.use('/logout', require('./routes/api/logout'));
 
 //Handle Errors
 app.use(function (err, req, res, next) {
