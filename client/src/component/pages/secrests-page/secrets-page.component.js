@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
+import { checkUserSession } from '../../../redux/user/user.action';
 
 class SecretPage extends Component {
-  state = { currentUser: null };
-
   componentDidMount() {
-    this.getUser();
+    this.props.checkUserSession();
   }
-
-  getUser = async () => {
-    const response = await axios.get('http://localhost:5000/login_success');
-    const data = response.data;
-    this.setState({ currentUser: data });
-  };
 
   render() {
     return (
       <div>
         <div>
-          {this.state.currentUser ? <p>Log in</p> : <p>unautheriazed</p>}
+          {this.props.currentUser ? <p>Log in</p> : <p>unautheriazed</p>}
         </div>
       </div>
     );
   }
 }
 
-export default SecretPage;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SecretPage);

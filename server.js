@@ -5,6 +5,7 @@ const passport = require('passport');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 //if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -25,13 +26,22 @@ app.use(
     secret: 'Our secret.',
     resave: false,
     saveUninitialized: false,
+    maxAge: 24 * 60 * 60 * 100,
   })
 );
+
+app.use(cookieParser());
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  })
+);
 
 // if (process.env.NODE_ENV === 'production') {
 //   app.use(express.static(path.join(__dirname, 'client/build')));
@@ -40,20 +50,32 @@ app.use(cors());
 //     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 //   });
 // }
-
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.header('Access-Control-Allow-Credentials', true);
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
 //Define Routes
-app.get('/', function (req, res) {
-  res.send('connected');
-});
+// app.get('/', function (req, res) {
+//   res.send('connected');
+// });
 app.use('/login', require('./routes/api/login'));
 app.use('/signup', require('./routes/api/signup'));
 app.use('/login_success', require('./routes/api/checkLogin'));
 app.use('/logout', require('./routes/api/logout'));
 
 //Handle Errors
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500);
-  res.json({ error: err });
+app.use(function (error, req, res, next) {
+  res.status(error.status || 500).send({
+    error: {
+      status: error.status || 500,
+      message: error.message || 'Internal Server Error',
+    },
+  });
 });
 
 app.listen(port, (error) => {

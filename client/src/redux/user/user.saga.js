@@ -15,19 +15,45 @@ export function* emailSignInAsync({ payload: { email, password, history } }) {
       email,
       password,
     });
-    yield put(signInSuccess({ user: response.data }));
-    history.push('/secrets');
+    yield put(signInSuccess(response.data));
+    history.push('/');
   } catch (error) {
-    yield put(signInFailure(error));
-    history.push('/login');
+    yield put(signInFailure(error.response.data.error));
+    history.push('/');
   }
 }
 
 export function* signOutAsync() {
   try {
-    yield put(signOutSuccess());
+    const response = yield axios.get('http://localhost:5000/logout');
+    yield put(signOutSuccess(response));
   } catch (error) {
     yield put(signOutFailure(error));
+  }
+}
+
+export function* isUserAuthenticated() {
+  try {
+    // const json = yield fetch('http://localhost:5000/login_success', {
+    //   method: 'GET',
+    //   credentials: 'include',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     'Access-Control-Allow-Credentials': true,
+    //   },
+    // }).then((response) => response.json());
+    const response = yield axios.get('http://localhost:5000/login_success', {
+      withCredentials: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials': true,
+      },
+    });
+    yield put(signInSuccess(response));
+  } catch (error) {
+    yield put(signInFailure(error.response.data.error));
   }
 }
 
@@ -41,6 +67,14 @@ export function* onSignOutStart() {
   yield takeLatest(UserActionTypes.SIGN_OUT_START, signOutAsync);
 }
 
+export function* onCheckUserSession() {
+  yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
+}
+
 export function* userSagas() {
-  yield all([call(onEmailSignInStart), call(onSignOutStart)]);
+  yield all([
+    call(onEmailSignInStart),
+    call(onSignOutStart),
+    call(onCheckUserSession),
+  ]);
 }
