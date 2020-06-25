@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { checkUserSession } from '../../../redux/user/user.action';
 
 class SecretPage extends Component {

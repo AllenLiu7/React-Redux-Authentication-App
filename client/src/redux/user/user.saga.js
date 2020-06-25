@@ -11,9 +11,14 @@ import {
 
 export function* emailSignInAsync({ payload: { email, password, history } }) {
   try {
-    const response = yield axios.post('http://localhost:5000/login', {
-      email,
-      password,
+    const response = yield axios({
+      method: 'post',
+      url: 'http://localhost:5000/login',
+      data: {
+        email,
+        password,
+      },
+      withCredentials: true,
     });
     yield put(signInSuccess(response.data));
     history.push('/');
@@ -25,8 +30,10 @@ export function* emailSignInAsync({ payload: { email, password, history } }) {
 
 export function* signOutAsync() {
   try {
-    const response = yield axios.get('http://localhost:5000/logout');
-    yield put(signOutSuccess(response));
+    const response = yield axios.get('http://localhost:5000/logout', {
+      withCredentials: true,
+    });
+    yield put(signOutSuccess(response.data));
   } catch (error) {
     yield put(signOutFailure(error));
   }
@@ -34,24 +41,10 @@ export function* signOutAsync() {
 
 export function* isUserAuthenticated() {
   try {
-    // const json = yield fetch('http://localhost:5000/login_success', {
-    //   method: 'GET',
-    //   credentials: 'include',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     'Access-Control-Allow-Credentials': true,
-    //   },
-    // }).then((response) => response.json());
     const response = yield axios.get('http://localhost:5000/login_success', {
       withCredentials: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Credentials': true,
-      },
     });
-    yield put(signInSuccess(response));
+    yield put(signInSuccess(response.data));
   } catch (error) {
     yield put(signInFailure(error.response.data.error));
   }
