@@ -21,19 +21,20 @@ export function* emailSignInAsync({ payload: { email, password, history } }) {
       withCredentials: true,
     });
     yield put(signInSuccess(response.data));
-    history.push('/');
+    history.push('/secrets');
   } catch (error) {
     yield put(signInFailure(error.response.data.error));
     history.push('/');
   }
 }
 
-export function* signOutAsync() {
+export function* signOutAsync({ payload: { history } }) {
   try {
     const response = yield axios.get('http://localhost:5000/logout', {
       withCredentials: true,
     });
     yield put(signOutSuccess(response.data));
+    history.push('/');
   } catch (error) {
     yield put(signOutFailure(error));
   }

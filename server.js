@@ -5,7 +5,6 @@ const passport = require('passport');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 
 //if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -15,7 +14,7 @@ const port = process.env.PORT || 5000;
 //connect to DB
 connectDB();
 
-require('./auth/auth');
+require('./passport');
 
 app.use(compression());
 app.use(bodyParser.json());
@@ -29,8 +28,6 @@ app.use(
     maxAge: 24 * 60 * 60 * 100,
   })
 );
-
-app.use(cookieParser());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -51,10 +48,6 @@ app.use(
 //   });
 // }
 
-//Define Routes
-// app.get('/', function (req, res) {
-//   res.send('connected');
-// });
 app.use('/login', require('./routes/api/login'));
 app.use('/signup', require('./routes/api/signup'));
 app.use('/login_success', require('./routes/api/checkLogin'));

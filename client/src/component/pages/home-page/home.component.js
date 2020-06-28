@@ -10,10 +10,6 @@ import {
 } from '../../../redux/user/user.action';
 
 class HomePage extends Component {
-  componentDidMount() {
-    this.props.checkUserSession();
-  }
-
   render() {
     return (
       <div className='home'>
@@ -33,12 +29,14 @@ class HomePage extends Component {
               </LinkContainer>
             </div>
           )}
+          {this.props.currentUser ? null : (
+            <div className='home__button'>
+              <LinkContainer to='/signup'>
+                <Button size='lg'>Sign up</Button>
+              </LinkContainer>
+            </div>
+          )}
 
-          <div className='home__button'>
-            <LinkContainer to='/signup'>
-              <Button size='lg'>Sign up</Button>
-            </LinkContainer>
-          </div>
           <div className='home__button'>
             <LinkContainer to='/secrets'>
               <Button size='lg'>Show Secrets</Button>
