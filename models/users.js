@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   googleId: String, //this is the ID that google return
+  facebookId: String,
   secret: String,
 });
 

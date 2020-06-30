@@ -22,21 +22,21 @@ class SecretPage extends Component {
             </p>
           )}
         </div>
+
+        <div className='secret-link'>
+          <LinkContainer to='/'>
+            <Button size='lg' variant='link'>
+              Home Page
+            </Button>
+          </LinkContainer>
+        </div>
         {this.props.currentUser ? (
           <div className='secret-button'>
             <Button onClick={() => signOutStart(history)} size='lg'>
               Sign Out
             </Button>
           </div>
-        ) : (
-          <div className='secret-button'>
-            <LinkContainer to='/'>
-              <Button size='lg' variant='link'>
-                Home Page
-              </Button>
-            </LinkContainer>
-          </div>
-        )}
+        ) : null}
       </div>
     );
   }

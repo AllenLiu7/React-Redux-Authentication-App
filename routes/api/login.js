@@ -21,12 +21,19 @@ router.post('/', async (req, res, next) => {
           });
         }
 
-        return res.send(user);
+        return res.send({ user, info });
       });
     } catch (error) {
       return next(error);
     }
   })(req, res, next);
+});
+
+router.get('/failed', (req, res) => {
+  res.status(401).json({
+    //success: false,
+    message: 'user failed to authenticate.',
+  });
 });
 
 module.exports = router;

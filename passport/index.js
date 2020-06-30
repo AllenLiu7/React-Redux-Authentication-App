@@ -1,6 +1,15 @@
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+
 const UserModel = require('../models/users');
+
+const config = require('config');
+const googleClientID = config.get('google.clientID');
+const googleClientSecret = config.get('google.clientSecret');
+const facebookClientID = config.get('facebook.clientID');
+const facebookClientSecret = config.get('facebook.clientSecret');
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
@@ -73,6 +82,77 @@ passport.use(
         }
         //Send the user information to the next middleware
         return done(null, user, { message: 'Logged in success' });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
+//google OAuth strategy
+passport.use(
+  'google',
+  new GoogleStrategy(
+    {
+      clientID: googleClientID,
+      clientSecret: googleClientSecret,
+      callbackURL: 'http://localhost:3000',
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // passport callback function
+        //check if user already exists in our db with the given profile ID
+        User.findOne({ googleId: profile.id }).then((user) => {
+          if (user) {
+            //if we already have a record with the given profile ID
+            done(null, user, { message: 'Log in success' });
+          } else {
+            //if not, create a new user
+            new User({
+              googleId: profile.id,
+            })
+              .save()
+              .then((user) => {
+                done(null, user, { message: 'Log in success' });
+              });
+          }
+        });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
+//facebook oauth
+passport.use(
+  'facebook',
+  new FacebookStrategy(
+    {
+      clientID: facebookClientID,
+      clientSecret: facebookClientSecret,
+      callbackURL: 'http://localhost:3000/secrets',
+      profileFields: ['id', 'displayName', 'name', 'emails'],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // passport callback function
+        //check if user already exists in our db with the given profile ID
+        User.findOne({ facebookId: profile.id }).then((user) => {
+          if (user) {
+            //if we already have a record with the given profile ID
+            done(null, user, { message: 'Log in success' });
+          } else {
+            //if not, create a new user
+            new User({
+              facebookId: profile.id,
+            })
+              .save()
+              .then((user) => {
+                done(null, user, { message: 'Log in success' });
+              });
+          }
+        });
       } catch (error) {
         return done(error);
       }

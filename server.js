@@ -21,6 +21,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  })
+);
+
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   next();
+// });
+
+app.use(
   session({
     secret: 'Our secret.',
     resave: false,
@@ -32,14 +45,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  })
-);
-
 // if (process.env.NODE_ENV === 'production') {
 //   app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -49,6 +54,8 @@ app.use(
 // }
 
 app.use('/login', require('./routes/api/login'));
+app.use('/login_google', require('./routes/api/login_google'));
+app.use('/login_facebook', require('./routes/api/login_facebook'));
 app.use('/signup', require('./routes/api/signup'));
 app.use('/login_success', require('./routes/api/checkLogin'));
 app.use('/logout', require('./routes/api/logout'));
