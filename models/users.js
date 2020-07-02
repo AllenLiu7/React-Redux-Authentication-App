@@ -5,12 +5,13 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
     unique: true,
+  },
+  name: {
+    type: String,
   },
   password: {
     type: String,
-    required: true,
   },
   googleId: String, //this is the ID that google return
   facebookId: String,
@@ -20,6 +21,9 @@ const UserSchema = new mongoose.Schema({
 //hash the password before store
 UserSchema.pre('save', async function (next) {
   const user = this;
+  if (!user.password) {
+    next();
+  }
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
   next();

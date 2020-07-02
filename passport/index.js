@@ -96,27 +96,24 @@ passport.use(
     {
       clientID: googleClientID,
       clientSecret: googleClientSecret,
-      callbackURL: 'http://localhost:3000',
+      callbackURL: 'http://localhost:5000/oauth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // passport callback function
-        //check if user already exists in our db with the given profile ID
-        User.findOne({ googleId: profile.id }).then((user) => {
-          if (user) {
-            //if we already have a record with the given profile ID
-            done(null, user, { message: 'Log in success' });
-          } else {
-            //if not, create a new user
-            new User({
-              googleId: profile.id,
-            })
-              .save()
-              .then((user) => {
-                done(null, user, { message: 'Log in success' });
-              });
-          }
+        const currentUser = await UserModel.findOne({
+          googleId: profile.id,
         });
+        // create new user if the database doesn't have this user
+        if (!currentUser) {
+          const newUser = await new UserModel({
+            googleId: profile.id,
+            email: profile._json.email,
+          }).save();
+          if (newUser) {
+            done(null, newUser);
+          }
+        }
+        done(null, currentUser);
       } catch (error) {
         return done(error);
       }
@@ -131,28 +128,25 @@ passport.use(
     {
       clientID: facebookClientID,
       clientSecret: facebookClientSecret,
-      callbackURL: 'http://localhost:3000/secrets',
-      profileFields: ['id', 'displayName', 'name', 'emails'],
+      callbackURL: 'http://localhost:5000/oauth/facebook/callback',
+      profileFields: ['email', 'name', 'id'],
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // passport callback function
-        //check if user already exists in our db with the given profile ID
-        User.findOne({ facebookId: profile.id }).then((user) => {
-          if (user) {
-            //if we already have a record with the given profile ID
-            done(null, user, { message: 'Log in success' });
-          } else {
-            //if not, create a new user
-            new User({
-              facebookId: profile.id,
-            })
-              .save()
-              .then((user) => {
-                done(null, user, { message: 'Log in success' });
-              });
-          }
+        const currentUser = await UserModel.findOne({
+          facebookId: profile.id,
         });
+        // create new user if the database doesn't have this user
+        if (!currentUser) {
+          const newUser = await new UserModel({
+            facebookId: profile.id,
+            email: profile._json.last_name,
+          }).save();
+          if (newUser) {
+            done(null, newUser);
+          }
+        }
+        done(null, currentUser);
       } catch (error) {
         return done(error);
       }

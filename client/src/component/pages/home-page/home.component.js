@@ -11,15 +11,13 @@ import {
 
 class HomePage extends Component {
   render() {
+    const { signOutStart, currentUser, history } = this.props;
     return (
       <div className='home'>
         <div className='home__title'>Secret Box</div>
         <div className='home__buttons'>
-          {this.props.currentUser ? (
-            <div
-              className='home__button'
-              onClick={() => this.props.signOutStart()}
-            >
+          {currentUser ? (
+            <div className='home__button' onClick={() => signOutStart(history)}>
               <Button size='lg'>Log Out</Button>
             </div>
           ) : (
@@ -29,7 +27,7 @@ class HomePage extends Component {
               </LinkContainer>
             </div>
           )}
-          {this.props.currentUser ? null : (
+          {currentUser ? null : (
             <div className='home__button'>
               <LinkContainer to='/signup'>
                 <Button size='lg'>Sign up</Button>
@@ -54,7 +52,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   checkUserSession: () => dispatch(checkUserSession()),
-  signOutStart: () => dispatch(signOutStart()),
+  signOutStart: (history) => dispatch(signOutStart({ history })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

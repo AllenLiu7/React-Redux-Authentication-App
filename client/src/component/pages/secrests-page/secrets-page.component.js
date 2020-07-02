@@ -8,13 +8,13 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 class SecretPage extends Component {
   render() {
-    const { signOutStart, history } = this.props;
+    const { signOutStart, currentUser, history } = this.props;
     return (
       <div>
         <div className='secret'>
-          {this.props.currentUser ? (
+          {currentUser ? (
             <p className='secret-text'>
-              {`Welcome ${this.props.currentUser.email}, you are successfully authenticated. The secret is 123!`}
+              {`Welcome ${currentUser.email}, you are successfully authenticated. The secret is 123!`}
             </p>
           ) : (
             <p className='secret-text'>
@@ -30,7 +30,7 @@ class SecretPage extends Component {
             </Button>
           </LinkContainer>
         </div>
-        {this.props.currentUser ? (
+        {currentUser ? (
           <div className='secret-button'>
             <Button onClick={() => signOutStart(history)} size='lg'>
               Sign Out

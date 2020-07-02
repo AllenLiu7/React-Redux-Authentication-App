@@ -29,7 +29,7 @@ router.post('/', async (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/failed', (req, res) => {
+router.get('/fail', (req, res) => {
   res.status(401).json({
     //success: false,
     message: 'user failed to authenticate.',

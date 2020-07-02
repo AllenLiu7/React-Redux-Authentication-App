@@ -52,12 +52,13 @@ app.use(passport.session());
 //     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 //   });
 // }
-
+app.get('/good', (req, res) => {
+  res.send('good');
+});
 app.use('/login', require('./routes/api/login'));
-app.use('/login_google', require('./routes/api/login_google'));
-app.use('/login_facebook', require('./routes/api/login_facebook'));
+app.use('/oauth', require('./routes/api/oauth'));
 app.use('/signup', require('./routes/api/signup'));
-app.use('/login_success', require('./routes/api/checkLogin'));
+app.use('/login_check', require('./routes/api/checkLogin'));
 app.use('/logout', require('./routes/api/logout'));
 
 //Handle Errors
