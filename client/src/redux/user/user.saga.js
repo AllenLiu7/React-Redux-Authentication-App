@@ -7,6 +7,8 @@ import {
   signInFailure,
   signOutFailure,
   signOutSuccess,
+  signUpSuccess,
+  signUpFailure,
 } from './user.action';
 
 export function* emailSignInAsync({ payload: { email, password, history } }) {
@@ -24,6 +26,25 @@ export function* emailSignInAsync({ payload: { email, password, history } }) {
     history.push('/secrets');
   } catch (error) {
     yield put(signInFailure(error.response.data.error));
+    history.push('/');
+  }
+}
+
+export function* signUpAsync({ payload: { email, password, history } }) {
+  try {
+    const response = yield axios({
+      method: 'post',
+      url: '/signup',
+      data: {
+        email,
+        password,
+      },
+      withCredentials: true,
+    });
+    yield put(signUpSuccess(response.data.user));
+    history.push('/secrets');
+  } catch (error) {
+    yield put(signUpFailure(error.response.data.error));
     history.push('/');
   }
 }
@@ -61,6 +82,10 @@ export function* onSignOutStart() {
   yield takeLatest(UserActionTypes.SIGN_OUT_START, signOutAsync);
 }
 
+export function* onSignUpStart() {
+  yield takeLatest(UserActionTypes.SIGN_UP_START, signUpAsync);
+}
+
 export function* onCheckUserSession() {
   yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 }
@@ -70,5 +95,6 @@ export function* userSagas() {
     call(onEmailSignInStart),
     call(onSignOutStart),
     call(onCheckUserSession),
+    call(onSignUpStart),
   ]);
 }

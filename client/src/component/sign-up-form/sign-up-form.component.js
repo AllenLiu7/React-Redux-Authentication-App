@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import { signUpStart } from '../../redux/user/user.action';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './sign-up-form.styles.scss';
@@ -24,6 +25,7 @@ class SignUpform extends Component {
     event.preventDefault();
 
     const { email, password, confirmPassword } = this.state;
+    const { history, signUpStart } = this.props;
     const form = event.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -38,31 +40,20 @@ class SignUpform extends Component {
       return;
     }
 
-    axios
-      .post('http://localhost:5000/signup', {
-        email,
-        password,
-      })
-      .then((response) => {
-        //console.log('sign up success');
-        console.log(response);
-        this.props.history.push('/secrets');
-      })
-      .catch((err) => {
-        console.log(err.response.data.error);
-        this.setState({ error_message: err.response.data.error });
-        this.props.history.push('/signup');
-      });
+    signUpStart(email, password, history);
   };
 
   render() {
+    const {
+      email,
+      password,
+      confirmPassword,
+      validated,
+      error_message,
+    } = this.state;
     return (
       <div className='sign-up-form'>
-        <Form
-          noValidate
-          validated={this.state.validated}
-          onSubmit={this.handleSubmit}
-        >
+        <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
           <Form.Group controlId='formBasicEmail'>
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -70,7 +61,7 @@ class SignUpform extends Component {
               type='email'
               name='email'
               placeholder='Enter Email'
-              value={this.state.email}
+              value={email}
               onChange={this.handleChange}
             />
             <Form.Control.Feedback type='invalid'>
@@ -85,7 +76,7 @@ class SignUpform extends Component {
               type='password'
               name='password'
               placeholder='Password'
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
             />
             <Form.Control.Feedback type='invalid'>
@@ -100,7 +91,7 @@ class SignUpform extends Component {
               type='password'
               name='confirmPassword'
               placeholder='Password'
-              value={this.state.confirmPassword}
+              value={confirmPassword}
               onChange={this.handleChange}
             />
             <Form.Control.Feedback type='invalid'>
@@ -111,11 +102,16 @@ class SignUpform extends Component {
           <Button variant='primary' type='submit'>
             Register
           </Button>
-          <p className='alert'>{this.state.error_message}</p>
+          <p className='alert'>{error_message}</p>
         </Form>
       </div>
     );
   }
 }
 
-export default withRouter(SignUpform);
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (email, password, history) =>
+    dispatch(signUpStart({ email, password, history })),
+});
+
+export default withRouter(connect(null, mapDispatchToProps)(SignUpform));

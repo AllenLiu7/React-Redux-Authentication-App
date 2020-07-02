@@ -32,11 +32,4 @@ router.post('/', async (req, res, next) => {
   })(req, res, next);
 });
 
-// router.post('/', passport.authenticate('signup'), async (req, res, next) => {
-//   res.json({
-//     message: 'Signup successful',
-//     user: req.user.email,
-//   });
-// });
-
 module.exports = router;
