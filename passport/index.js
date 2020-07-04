@@ -5,12 +5,6 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 
 const UserModel = require('../models/users');
 
-const config = require('config');
-const googleClientID = config.get('google.clientID');
-const googleClientSecret = config.get('google.clientSecret');
-const facebookClientID = config.get('facebook.clientID');
-const facebookClientSecret = config.get('facebook.clientSecret');
-
 passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
@@ -94,8 +88,8 @@ passport.use(
   'google',
   new GoogleStrategy(
     {
-      clientID: googleClientID,
-      clientSecret: googleClientSecret,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:5000/oauth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -126,8 +120,8 @@ passport.use(
   'facebook',
   new FacebookStrategy(
     {
-      clientID: facebookClientID,
-      clientSecret: facebookClientSecret,
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       callbackURL: 'http://localhost:5000/oauth/facebook/callback',
       profileFields: ['email', 'name', 'id'],
     },

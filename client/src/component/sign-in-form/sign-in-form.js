@@ -31,11 +31,11 @@ class SignInForm extends Component {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+    } else {
+      emailSignInStart(email, password, history);
     }
 
     this.setState({ validated: true });
-
-    emailSignInStart(email, password, history);
   };
   render() {
     return (

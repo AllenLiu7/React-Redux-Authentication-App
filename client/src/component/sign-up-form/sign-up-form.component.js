@@ -31,16 +31,15 @@ class SignUpform extends Component {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+    } else {
+      if (password !== confirmPassword) {
+        alert("passwords don't match");
+        return;
+      }
+      signUpStart(email, password, history);
     }
 
     this.setState({ validated: true });
-
-    if (password !== confirmPassword) {
-      alert("passwords don't match");
-      return;
-    }
-
-    signUpStart(email, password, history);
   };
 
   render() {
