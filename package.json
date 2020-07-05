@@ -1,6 +1,10 @@
 {
   "name": "react-passport",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.16.2",
+    "npm": "6.14.4"
+  },
   "description": "This is an app using react and passport js",
   "main": "server.js",
   "scripts": {
@@ -8,7 +12,8 @@
     "server": "nodemon server.js",
     "build": "cd client && npm run build",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "author": "Allen Liu",
   "license": "ISC",
