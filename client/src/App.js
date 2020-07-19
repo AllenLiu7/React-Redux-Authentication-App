@@ -5,7 +5,6 @@ import HomePage from './component/pages/home-page/home.component';
 import SignInPage from './component/pages/sign-in-page/sign-in.component';
 import SignUpPage from './component/pages/sign-up-page/sign-up.component';
 import SecretPage from './component/pages/secrests-page/secrets-page.component';
-import ProtectedRoute from './component/pages/protectedRoute';
 
 import { checkUserSession } from '../src/redux/user/user.action';
 
