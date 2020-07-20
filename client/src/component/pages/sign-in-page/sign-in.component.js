@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import SignInForm from '../../sign-in-form/sign-in-form';
 import {
   FacebookLoginButton,

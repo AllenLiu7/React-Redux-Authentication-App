@@ -72,7 +72,7 @@ export function* isUserAuthenticated() {
   }
 }
 
-//-----------------watcher-----------------
+//---------------------------------watcher----------------------------------
 
 export function* onEmailSignInStart() {
   yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, emailSignInAsync);

@@ -11,7 +11,6 @@ class SignUpform extends Component {
     email: '',
     password: '',
     confirmPassword: '',
-    error_message: '',
     validated: false,
   };
 
@@ -28,10 +27,7 @@ class SignUpform extends Component {
     const { history, signUpStart } = this.props;
     const form = event.currentTarget;
 
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
+    if (form.checkValidity()) {
       if (password !== confirmPassword) {
         alert("passwords don't match");
         return;
@@ -43,13 +39,7 @@ class SignUpform extends Component {
   };
 
   render() {
-    const {
-      email,
-      password,
-      confirmPassword,
-      validated,
-      error_message,
-    } = this.state;
+    const { email, password, confirmPassword, validated } = this.state;
     return (
       <div className='sign-up-form'>
         <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
@@ -83,7 +73,7 @@ class SignUpform extends Component {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group controlId='formBasicPassword'>
+          <Form.Group controlId='formBasicConfirmPassword'>
             <Form.Label>Comfirm Password</Form.Label>
             <Form.Control
               required
@@ -101,7 +91,6 @@ class SignUpform extends Component {
           <Button variant='primary' type='submit'>
             Register
           </Button>
-          <p className='alert'>{error_message}</p>
         </Form>
       </div>
     );

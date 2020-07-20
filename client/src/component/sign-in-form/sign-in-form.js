@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { emailSignInStart } from '../../redux/user/user.action';
-
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './sign-in-form.styles.scss';
@@ -28,23 +27,19 @@ class SignInForm extends Component {
     const { emailSignInStart, history } = this.props;
     const form = event.currentTarget;
 
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
+    //html 5 validation
+    if (form.checkValidity()) {
       emailSignInStart(email, password, history);
     }
 
     this.setState({ validated: true });
   };
   render() {
+    const { email, password, validated } = this.state;
+
     return (
       <div className='signin-form'>
-        <Form
-          noValidate
-          validated={this.state.validated}
-          onSubmit={this.handleSubmit}
-        >
+        <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
           <Form.Group controlId='formBasicEmail'>
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -52,7 +47,7 @@ class SignInForm extends Component {
               type='email'
               name='email'
               placeholder='Enter Email'
-              value={this.state.email}
+              value={email}
               onChange={this.handleChange}
             />
             <Form.Control.Feedback type='invalid'>
@@ -67,7 +62,7 @@ class SignInForm extends Component {
               type='password'
               name='password'
               placeholder='Enter Password'
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
             />
             <Form.Control.Feedback type='invalid'>
@@ -77,7 +72,6 @@ class SignInForm extends Component {
           <Button variant='primary' type='submit'>
             Submit
           </Button>
-          <p className='alert'>{this.state.error_message}</p>
         </Form>
       </div>
     );
