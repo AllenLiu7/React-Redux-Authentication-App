@@ -11,18 +11,18 @@ npm run install-all
 ## Environment Varialbes
 These are environment variables you need to set up in order the run this app.
 ````javascript
-#the uri to connect to a mongodb database
+//the uri to connect to a mongodb database
 MONGO_URI
 
-#the google id and secret for google OAuth 2.0 from your own google cloud platform
+//the google id and secret for google OAuth 2.0 from your own google cloud platform
 GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
 
-#the facbook id and secret for facebook OAuth from your own facebook cloud platform
+//the facbook id and secret for facebook OAuth from your own facebook cloud platform
 FACEBOOK_CLIENT_ID
 FACEBOOK_CLIENT_SECRET
 
-#set the session secret for the authentication as you like
+//set the session secret for the authentication as you like
 SESSION_SECRET
 ````
 ## Usage
